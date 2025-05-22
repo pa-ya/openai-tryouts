@@ -1,0 +1,9 @@
+@host = http://localhost:8080
+
+### Post prompt
+POST {{host}}/prompt
+Content-Type: application/json
+
+{
+    "input": "The sky is"
+}
