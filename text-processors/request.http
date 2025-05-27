@@ -5,5 +5,5 @@ POST {{host}}/prompt
 Content-Type: application/json
 
 {
-    "input": "The sky is"
+    "input": "Computer"
 }

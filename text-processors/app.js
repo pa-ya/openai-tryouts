@@ -9,14 +9,16 @@ app.use(express.json());
 
 // setup open ai
 const { OpenAI } = require("openai");
-
+console.log(process.env.OPENAI_API_KEY);
 const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
 
 const runCompletion = async (prompt) =>
-  openai.completions.create({
+  openai.chat.completions.create({
     model: "gpt-3.5-turbo",
-    prompt,
-    max_tokens: 5,
+    messages: [
+      { role: "system", content: "write a story about the word" },
+      { role: "user", content: prompt },
+    ],
   });
 
 app.post("/prompt", async (req, res) => {
@@ -24,7 +26,7 @@ app.post("/prompt", async (req, res) => {
     const { input } = req.body;
     const completion = await runCompletion(input);
     console.log(completion);
-    res.status(200).json({ data: completion.data });
+    res.status(200).json({ data: completion, message: completion.choices[0].message });
   } catch (error) {
     console.error(error);
     if (error?.response)
